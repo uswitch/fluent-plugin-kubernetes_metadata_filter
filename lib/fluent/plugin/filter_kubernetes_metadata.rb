@@ -112,7 +112,8 @@ module Fluent
         metadata = @client.get_pod(pod_name, namespace_name)
         return if !metadata
         return parse_pod_metadata(metadata)
-      rescue KubeException
+      rescue KubeException => e
+        log.error "Error: error retrieving pod metadata: #{e}"
         nil
       end
     end
@@ -250,7 +251,8 @@ module Fluent
               if namespace
                 parse_namespace_metadata(namespace)
               end
-            rescue KubeException
+            rescue KubeException => e
+              log.error "Error: error retrieving namespace metadata: #{e}"
               nil
             end
           }
